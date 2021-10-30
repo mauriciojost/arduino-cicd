@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+
+set -e
+set -x
+
+hostname
+whoami
+groups
+pwd
+ls
+
+ls exports
+
+
+# Convention:
+#  firmware-<version>.<platform>.bin
+# Example:
+#  firmware-3.1.1.esp32.bin
+
+export project=$(cat ../../profiles/constants.prof | egrep "^-D PROJECT_ID="  | sed -E 's/^[^=]*=(.*)/\1/g')
+export expo_path="/var/lib/main4ino/httpexposed/$project"
+
+function export_firmware_for_platform() {
+  local platform=$1
+
+  echo "Exporting files for $platform..."
+
+  find . -name 'firmware-*.'$platform'.bin' > files.list
+  find . -name 'firmware-*.'$platform'.elf' >> files.list
+  find . -name 'firmware-*.'$platform'.description.json' >> files.list
+
+  for f in `cat files.list`
+  do
+    echo "Moving $f..."
+    mkdir -p $expo_path
+    mv -f $f $expo_path
+  done
+
+}
+
+for platform in $(cat .platforms.build)
+do
+  export_firmware_for_platform "$platform"
+done
+
