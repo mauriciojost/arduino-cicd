@@ -1,9 +1,0 @@
-{
-  "json" : [
-    {
-      "patterns" : ["^.*.freq$"],
-      "descriptions" : ["Frequency at "],
-      "examples" : [ ]
-    }
-  ]
-}
