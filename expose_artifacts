@@ -25,7 +25,7 @@ function export_firmware_for_platform() {
 
   echo "Exporting files for $platform..."
 
-  python merge-main4ino-description.py $(find -name main4ino-description.json | sort | uniq) > description.json
+  python3 merge-main4ino-description.py $(find -name main4ino-description.json | sort | uniq) > description.json
 
   find . -name 'firmware-*.'$platform'.bin' > files.list
   find . -name 'firmware-*.'$platform'.elf' >> files.list
